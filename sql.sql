@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 03-02-2019 a las 19:58:45
+-- Tiempo de generación: 06-02-2019 a las 18:45:04
 -- Versión del servidor: 5.7.23
 -- Versión de PHP: 7.2.10
 
@@ -25,57 +25,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `entregas`
+-- Estructura de tabla para la tabla `niño`
 --
 
-DROP TABLE IF EXISTS `entregas`;
-CREATE TABLE IF NOT EXISTS `entregas` (
-  `idRey` int(11) NOT NULL,
-  `idRegalos` int(11) NOT NULL,
-  PRIMARY KEY (`idRey`,`idRegalos`),
-  KEY `fk_regalos_entregas_idx` (`idRegalos`)
+DROP TABLE IF EXISTS `niño`;
+CREATE TABLE IF NOT EXISTS `niño` (
+  `idNiño` int(11) NOT NULL,
+  `Nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  `Apellido` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  `Fecha` date NOT NULL,
+  `Bueno` varchar(2) COLLATE utf8_spanish2_ci NOT NULL,
+  PRIMARY KEY (`idNiño`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `entregas`
+-- Volcado de datos para la tabla `niño`
 --
 
-INSERT INTO `entregas` (`idRey`, `idRegalos`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(2, 5),
-(2, 6),
-(2, 7),
-(3, 8),
-(3, 9),
-(3, 10),
-(3, 11),
-(2, 12),
-(2, 13);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `niños`
---
-
-DROP TABLE IF EXISTS `niños`;
-CREATE TABLE IF NOT EXISTS `niños` (
-  `idNiños` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
-  `Apellidos` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
-  `fechaNac` date NOT NULL,
-  `Bueno` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
-  PRIMARY KEY (`idNiños`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-
---
--- Volcado de datos para la tabla `niños`
---
-
-INSERT INTO `niños` (`idNiños`, `Nombre`, `Apellidos`, `fechaNac`, `Bueno`) VALUES
+INSERT INTO `niño` (`idNiño`, `Nombre`, `Apellido`, `Fecha`, `Bueno`) VALUES
 (1, 'Alberto', 'Alcántara', '1994-10-13', 'No'),
 (2, 'Beatriz', 'Bueno', '1982-04-18', 'Si'),
 (3, 'Carlos', 'Crepo', '1998-12-01', 'Si'),
@@ -86,71 +53,75 @@ INSERT INTO `niños` (`idNiños`, `Nombre`, `Apellidos`, `fechaNac`, `Bueno`) VA
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pedidos`
+-- Estructura de tabla para la tabla `pedido`
 --
 
-DROP TABLE IF EXISTS `pedidos`;
-CREATE TABLE IF NOT EXISTS `pedidos` (
-  `idNiños` int(11) NOT NULL,
-  `idRegalos` int(11) NOT NULL,
-  PRIMARY KEY (`idNiños`,`idRegalos`),
-  KEY `fk_regalo_pedidos_idx` (`idRegalos`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+DROP TABLE IF EXISTS `pedido`;
+CREATE TABLE IF NOT EXISTS `pedido` (
+  `idNiño` int(11) NOT NULL,
+  `idRegalo` int(11) NOT NULL,
+  PRIMARY KEY (`idNiño`,`idRegalo`),
+  KEY `regaloFK_idx` (`idRegalo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `pedidos`
+-- Volcado de datos para la tabla `pedido`
 --
 
-INSERT INTO `pedidos` (`idNiños`, `idRegalos`) VALUES
-(1, 1),
+INSERT INTO `pedido` (`idNiño`, `idRegalo`) VALUES
+(6, 1),
+(1, 2),
+(6, 2),
 (1, 3),
-(1, 4),
+(6, 3),
+(3, 4),
 (1, 5),
-(1, 8),
-(1, 9),
-(1, 11),
-(1, 12),
-(2, 1),
-(2, 3),
-(2, 4),
 (2, 5),
-(2, 8),
-(2, 9),
-(2, 11),
-(2, 12);
+(3, 5),
+(5, 7),
+(6, 7),
+(6, 8),
+(1, 9),
+(3, 9),
+(4, 10),
+(4, 11),
+(5, 12),
+(5, 13);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `regalos`
+-- Estructura de tabla para la tabla `regalo`
 --
 
-DROP TABLE IF EXISTS `regalos`;
-CREATE TABLE IF NOT EXISTS `regalos` (
-  `idRegalos` int(11) NOT NULL,
-  `nomJuguete` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
-  `Precio` decimal(5,2) NOT NULL,
-  PRIMARY KEY (`idRegalos`)
+DROP TABLE IF EXISTS `regalo`;
+CREATE TABLE IF NOT EXISTS `regalo` (
+  `idRegalo` int(11) NOT NULL,
+  `Nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  `Precio` decimal(10,2) NOT NULL,
+  `idRey` int(11) NOT NULL,
+  PRIMARY KEY (`idRegalo`),
+  KEY `reyFK_idx` (`idRey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
--- Volcado de datos para la tabla `regalos`
+-- Volcado de datos para la tabla `regalo`
 --
 
-INSERT INTO `regalos` (`idRegalos`, `nomJuguete`, `Precio`) VALUES
-(1, 'Aula de ciencia: Robot Mini ERP', '159.95'),
-(2, 'Carbón', '0.00'),
-(3, 'Cochecito Classic', '99.95'),
-(4, 'Consola PS4 1 TB', '349.90'),
-(5, 'Lego Villa familiar modular', '64.99'),
-(6, 'Magia Borrás Clásica 150 trucos con luz', '32.95'),
-(7, 'Meccano Excavadora construcción', '30.99'),
-(8, 'Nenuco Hace pompas', '29.95'),
-(9, 'Peluche delfín rosa', '34.00'),
-(10, 'Pequeordenador', '22.95'),
-(11, 'Robot Coji', '69.95'),
-(12, 'Telescopio astronómico terrestre', '72.00'),
-(13, 'Twister', '17.95');
+INSERT INTO `regalo` (`idRegalo`, `Nombre`, `Precio`, `idRey`) VALUES
+(1, 'Aula de ciencia: Robot Mini ERP', '159.95', 1),
+(2, 'Carbón', '0.00', 1),
+(3, 'Cochecito Classic', '99.95', 1),
+(4, 'Consola PS4 1 TB', '349.90', 1),
+(5, 'Lego Villa familiar modular', '64.99', 2),
+(6, 'Magia Borrás Clásica 150 trucos con luz', '32.95', 2),
+(7, 'Meccano Excavadora construcción', '30.99', 2),
+(8, 'Nenuco Hace pompas', '29.95', 2),
+(9, 'Peluche delfín rosa', '34.00', 2),
+(10, 'Pequeordenador', '22.95', 3),
+(11, 'Robot Coji', '69.95', 3),
+(12, 'Telescopio astronómico terrestre', '72.00', 3),
+(13, 'Twister', '17.95', 3);
 
 -- --------------------------------------------------------
 
@@ -179,11 +150,17 @@ INSERT INTO `rey` (`idRey`, `Nombre`) VALUES
 --
 
 --
--- Filtros para la tabla `entregas`
+-- Filtros para la tabla `pedido`
 --
-ALTER TABLE `entregas`
-  ADD CONSTRAINT `fk_regalos_entregas` FOREIGN KEY (`idRegalos`) REFERENCES `regalos` (`idRegalos`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_rey_entregas` FOREIGN KEY (`idRey`) REFERENCES `rey` (`idRey`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `pedido`
+  ADD CONSTRAINT `niñoFK` FOREIGN KEY (`idNiño`) REFERENCES `niño` (`idNiño`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `regaloFK` FOREIGN KEY (`idRegalo`) REFERENCES `regalo` (`idRegalo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `regalo`
+--
+ALTER TABLE `regalo`
+  ADD CONSTRAINT `reyFK` FOREIGN KEY (`idRey`) REFERENCES `rey` (`idRey`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
